@@ -10,8 +10,9 @@ export const loginSlice = createSlice({
   name: 'login',
   initialState,
   reducers: {
-    login: async (state, action) => {
-      await AsyncStorage.setItem('access_token', action.payload);
+    login: (state, action) => {
+      console.log('Payload', action.payload);
+      AsyncStorage.setItem('access_token', action.payload);
       state.isLogged = true;
       state.token = action.payload;
     },

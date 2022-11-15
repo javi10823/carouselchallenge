@@ -1,7 +1,7 @@
 import {createApi} from '@reduxjs/toolkit/query/react';
 import {baseQueryRTK} from '../baseQueryRTK';
 
-export const authApi = createApi({
+export const homeApi = createApi({
   reducerPath: 'homeApi',
   baseQuery: baseQueryRTK,
   endpoints: builder => ({
@@ -11,4 +11,4 @@ export const authApi = createApi({
   }),
 });
 
-export const {useGetDataQuery} = authApi;
+export const {useGetDataQuery} = homeApi;
