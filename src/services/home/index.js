@@ -6,7 +6,7 @@ export const homeApi = createApi({
   baseQuery: baseQueryRTK,
   endpoints: builder => ({
     getData: builder.query({
-      query: 'data',
+      query: () => 'data',
     }),
   }),
 });
