@@ -11,4 +11,4 @@ export const homeApi = createApi({
   }),
 });
 
-export const {useGetDataQuery} = homeApi;
+export const {useLazyGetDataQuery} = homeApi;

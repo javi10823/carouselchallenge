@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useLayoutEffect, useState} from 'react';
 import {
   FlatList,
   SafeAreaView,
@@ -8,13 +8,17 @@ import {
   Alert,
 } from 'react-native';
 import {Title} from 'react-native-paper';
-import {useGetDataQuery} from '../../services/home';
+import {useLazyGetDataQuery} from '../../services/home';
 import Video from 'react-native-video';
 import styles from './styles';
 
 const Home = () => {
   const [video, setVideo] = useState('');
-  const {data, isLoading} = useGetDataQuery();
+  const [fetch, {data, isLoading}] = useLazyGetDataQuery();
+
+  useEffect(() => {
+    fetch();
+  }, [fetch]);
 
   const onPressItem = videoUrl => {
     if (videoUrl) {
