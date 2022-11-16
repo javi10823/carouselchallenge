@@ -1,11 +1,30 @@
-import React from 'react';
-import {FlatList, SafeAreaView, View, Image} from 'react-native';
+import React, {useState} from 'react';
+import {
+  FlatList,
+  SafeAreaView,
+  View,
+  Image,
+  TouchableOpacity,
+  Alert,
+} from 'react-native';
 import {Title} from 'react-native-paper';
 import {useGetDataQuery} from '../../services/home';
+import Video from 'react-native-video';
 import styles from './styles';
 
 const Home = () => {
+  const [video, setVideo] = useState('');
   const {data, isLoading} = useGetDataQuery();
+
+  const onPressItem = videoUrl => {
+    if (videoUrl) {
+      return setVideo(videoUrl);
+    }
+    Alert.alert(
+      'Video not available',
+      "This item doesn't have a video available",
+    );
+  };
 
   return (
     <SafeAreaView>
@@ -17,20 +36,20 @@ const Home = () => {
               <>
                 <Title>{item.title}</Title>
                 <FlatList
+                  style={styles.itemsFlatList}
                   renderItem={({item: item2}) => (
-                    <View
-                      style={{
-                        flex: 1,
-                        alignItems: 'center',
-                      }}>
+                    <TouchableOpacity
+                      onPress={() => onPressItem(item2.videoUrl)}
+                      style={styles.itemContainer}>
                       <Image
                         source={{uri: item2.imageUrl}}
                         style={
                           item.type === 'thumb'
-                            ? styles.carouselItem
-                            : styles.carouselItem2
+                            ? styles.carouselThumb
+                            : styles.carouselPoster
                         }
                       />
+
                       <Title
                         style={{
                           position:
@@ -39,7 +58,7 @@ const Home = () => {
                         }}>
                         {item2.title}
                       </Title>
-                    </View>
+                    </TouchableOpacity>
                   )}
                   data={item.items}
                   snapToOffsets={item.items.map(
@@ -48,13 +67,25 @@ const Home = () => {
                   horizontal
                   pagingEnabled
                 />
-                <View style={{height: 8}} />
               </>
             )}
             data={data}
           />
         )}
       </View>
+      {video && (
+        <>
+          <Video
+            onEnd={() => setVideo('')}
+            source={{uri: video}}
+            resizeMode="contain"
+            style={styles.video}
+          />
+          <Title style={styles.closeButton} onPress={() => setVideo(null)}>
+            X
+          </Title>
+        </>
+      )}
     </SafeAreaView>
   );
 };
